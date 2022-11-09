@@ -1,107 +1,53 @@
-import statistics
-import numpy
-class Math:
+import pymongo
+from pymongo import MongoClient
+cluster = MongoClient("mongodb+srv://mateen:asdf@cluster0.yqoowcc.mongodb.net/?retryWrites=true&w=majority")
+db = cluster['base']
+collection = db['colection']
+post = {
+    'id':1,
+    'name':'talha',
+    'age':18
+}
 
-    def __init__(self,ages):
-        self.ages=ages
+post2 = {
+    'id':2,
+    'name':'tayab',
+    'age':22
+}
 
-    def cont(self):
-        c=self.ages
-        m=len(c)
-        print(m)
+collection.insert_many([post,post2])
 
-    def sm(self):
-        c=self.ages
-        m=0
-        i=0
-        j=len(c)
-        while (i<j):
-            m=m+c[i]
-            i+=1
-        print(m)
+m=collection.find({'id':2})
+for c in m:
+   print(c)
 
-    def mn(self):
-        c=self.ages
-        c.sort()
-        print(c[0])
-
-    def mx(self):
-        c=self.ages
-        c.sort()
-        print(c[-1])
+m=collection.find({'id':2})
+for c in m:
+    print(c['name'])
 
 
-    def rng(self):
-        c=self.ages
-        a=max(c)-min(c)
-        print(a)
+i={
+    'id':2  
+}
+m=collection.find(i)
+for c in m:
+    print(c['name'])
 
-    def meaan(self):
-        c=self.ages
-        c=self.ages
-        m=0
-        i=0
-        j=len(c)
-        while (i<j):
-            m=m+c[i]
-            i+=1
-        v=m/len(c)
-        print(v)
+m=collection.find_one({'id':1})
+print(m)
 
-    def mdn(self):
-        c=self.ages
-        c.sort()
-        f=len(c)
-        if f%2==0:
-            m=f/2
-            e=(c[f]+c[f+1])/2
-            print(e)
+collection.update_one( { 'id': 1 }, { set: { 'name': 'usman' } } )
 
-        elif f%2!=0:
+collection.update_many({}, { inc: { 'name': 1 } })
 
-            c=self.ages
-            c.insert(-1,44)
-            c.sort()
-            f=len(c)
-            m=f/2
-            o=m+1
-            e=c[m]+c[o]
-            j=e/2
-            print(j)
+collection.delete_one({ 'id': 1 })
 
-    def mod(self):
-        c=self.ages
-        m=0
-        f=0
-        i=0
-        j=len(c)
-        while (i<j):
-            f=0
-            count=0
-            while(f<len(c)):
-                if c[i]==c[f]:
-                   count+=1
-                f+=1
-
-            if  count>=4:
-                a=[count,c[i]]
-                print(a)
-
-    def sst(self):
-        c=self.ages
-        print(numpy.std(c))
-
-    def vr(self):
-        c=self.ages
-        print(statistics.variance(c))
+collection.delete_many({ 'id' })
+collection.drop()
 
 
-ag = [31, 26, 34, 37, 27, 26, 32, 32, 26, 27, 27, 24, 32, 33, 27, 25, 26, 38, 37, 31, 34, 24, 33, 29, 26]
-data=Math(ag)
-data.sm()
-data.mn()
-data.mx()
-data.rng()
-data.mdn()
-data.mod()
-data.meaan()
+
+
+
+
+
